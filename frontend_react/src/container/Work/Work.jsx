@@ -7,35 +7,42 @@ import { urlFor, client } from '../../client';
 import './Work.scss';
 
 const Work = () => {
-  // states for work
+  // states for work, filter work and data
   const [works, setWorks] = useState([]);
   const [filterWork, setFilterWork] = useState([]);
   const [activeFilter, setActiveFilter] = useState('All');
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
 
-  // useEffect(() => {
-  //   const query = '*[_type == "works"]';
+  useEffect(() => {
+    // create a query
+    const query = '*[_type == "works"]';
 
-  //   client.fetch(query).then((data) => {
-  //     setWorks(data);
-  //     setFilterWork(data);
-  //   });
-  // }, []);
+    // get the data and set it
+    client.fetch(query).then((data) => {
+      setWorks(data);
+      setFilterWork(data);
+    });
+  }, []);
 
+  // setup the filter option
   const handleWorkFilter = (item) => {
    
-    // setActiveFilter(item);
-    // setAnimateCard([{ y: 100, opacity: 0 }]);
+    // set hooks to tiem
+    setActiveFilter(item);
+    // for animate
+    setAnimateCard([{ y: 100, opacity: 0 }]);
 
-    // setTimeout(() => {
-    //   setAnimateCard([{ y: 0, opacity: 1 }]);
+    // settimout to trigger animation
+    setTimeout(() => {
+      setAnimateCard([{ y: 0, opacity: 1 }]);
 
-    //   if (item === 'All') {
-    //     setFilterWork(works);
-    //   } else {
-    //     setFilterWork(works.filter((work) => work.tags.includes(item)));
-    //   }
-    // }, 500);
+      // conditional state
+      if (item === 'All') {
+        setFilterWork(works);
+      } else {
+        setFilterWork(works.filter((work) => work.tags.includes(item)));
+      }
+    }, 500);
   };
 
   return (
@@ -56,7 +63,7 @@ const Work = () => {
       </div>
 
       {/* our class div used  */}
-      {/* adding our categories */}
+      {/* adding our data categories */}
       <motion.div
         animate={animateCard}
         transition={{ duration: 0.5, delayChildren: 0.5 }}
@@ -113,8 +120,4 @@ const Work = () => {
   );
 };
 
-export default AppWrap(
-  //MotionWrap(Work, 'app__works'),
-  'work',
-  'app__primarybg',
-);
+export default AppWrap(Work, 'work')

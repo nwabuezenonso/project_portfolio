@@ -3,15 +3,20 @@ import { motion } from 'framer-motion'
 
 import { images } from '../../constant'
 import './About.scss'
+import { urlFor, client } from '../../client'  // fetch sanity data
 
-const abouts = [
-  {title: 'Web development', description:'I am a good web developer', imgUrl: images.about01},
-  {title: 'Web design', description:'I am a good web developer', imgUrl: images.about02},
-  {title: 'UI/UX', description:'I am a good web developer', imgUrl: images.about03},
-  {title: 'Web Animation', description:'I am a good web developer', imgUrl: images.about04}
-]
 
 const About = () => {
+
+  const [abouts, setAbouts] = useState([]); // use state
+
+  useEffect(() => {
+    const query = '*[_type == "abouts"]' // creating a type of about
+
+    client.fetch(query) // fetching the data from the about
+      .then((data) => setAbouts(data))
+  }, []);
+
   return (
     <>
     <h2 className="head-text">I Know that 
@@ -27,7 +32,7 @@ const About = () => {
         className="app__profile-item"
         key={about.title + index}
       >
-        <img src={about.imgUrl} alt={about.title} />
+        <img src={urlFor(about.imgUrl)} alt={about.title} />
         <h2 className="bold-text" style={{ marginTop: 20 }}>{about.title}</h2>
         <p className="p-text" style={{ marginTop: 10 }}>{about.description}</p>
       </motion.div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
-import { images } from '../../constant'
 import './About.scss'
 import { urlFor, client } from '../../client'  // fetch sanity data
 
